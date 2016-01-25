@@ -20,50 +20,68 @@ class srtmParser(object):
         fi.close()
         self.z=struct.unpack(">12967201H", contents)
 
-#set target coordinates and select level of detail
+#select target coordinates, level of detail, and units of altitude
 while True:
-        try:
-            target = input("Select target coordinates (example: N46W122)")
-        except ValueError:
-            print("invalid target format")
-            continue
-        if not(target[0] not in ("N", "E") or not target[1:3].isdigit() or target[3] not in ("W", "E") or not target[4:7].isdigit()):
-            break
-        else:
-            print("Please enter coordinates in the correct format. Examples include: 'N46W122', 'N27E088', or 'S32W071'")
+    try:
+        target = input("Select target coordinates (example: N46W122)")
+    except ValueError:
+        print("invalid target format")
+        continue
+    if not(target[0] not in ("N", "E") or not target[1:3].isdigit() or target[3] not in ("W", "E") or not target[4:7].isdigit()):
+        break
+    else:
+        print("Please enter coordinates in the correct format. Examples include: N46W122, N27E088, or S32W071")
 while True:
-        try:
-            detail = int(input("Select level of detail. Enter 1 for 1-arc second (higher detail) or 3 for 3-arc second (lower detail)"))
-        except ValueError:
-            print("Please input either 1 or 3")
-            continue
-        if detail == 1 or detail == 3:
-            break
-        else:
-            print("Please enter either 1 or 3")
-#downloads zipped file and extracts contents as hgt file named 'target' + .hgt
-file = urllib.request.urlretrieve("http://e4ftl01.cr.usgs.gov/SRTM/SRTMGL1.003/2000.02.11/"+target+".SRTMGL1.hgt.zip", "file.hgt.zip")
-unzip = zipfile.ZipFile('file.hgt.zip')
-unzip.extractall()
+    try:
+        detail = int(input("Select level of detail. Enter 1 for 1-arc second (higher detail) or 3 for 3-arc second (lower detail)"))
+    except ValueError:
+        print("Please input either 1 or 3")
+        continue
+    if detail == 1 or detail == 3:
+        break
+    else:
+        print("Please enter either 1 or 3")
+while True:
+    try:
+        units = input("Select units of altitude. Enter 'Feet' or 'Meters'")
+    except ValueError:
+        print("please input either 'Feet' or 'Meters'")
+        continue
+    if units in ("Feet", "Meters"):
+        break
+    else:
+        print("please enter either 'Feet' or 'Meters'")
+
+##downloads zipped file and extracts contents as hgt file named 'target' + .hgt
+file = urllib.request.urlretrieve("http://e4ftl01.cr.usgs.gov/SRTM/SRTMGL"+str(detail)+".003/2000.02.11/"+target+".SRTMGL"+str(detail)+".hgt.zip", "file.hgt.zip")
+zipfile.ZipFile('file.hgt.zip').extractall()
 
 #parse HGT file and save contents as numpy array
+f = srtmParser()
 if detail == 1:
-    f = srtmParserL3()
+    f.parseFileL3(target+".hgt")
     csvtarget = np.zeros((12960000,3)) #3600x3600
-    x = 3600
+    x = 3601
+    w = 30
 else:
-    f = srtmParserL1()
+    f.parseFileL1(target+".hgt")
     csvtarget = np.zeros((1440000,3)) #1200x1200
-    x = 1200
-f.parseFile(target+".hgt")
+    x = 1201
+    w = 90
+if units == "Feet":
+    y = 3.281
+else:
+    y = 1
+    
+#place parsed np array into CSV file    
 i = 0
-for r in range(x):
-    for c in range(x):
-        va=f.z[((x+1)*(r+1))+c+1]
-        if (va<0 or va>30000):
-            va=0.0
-        csvtarget[i][0]=int(c)
-        csvtarget[i][1]=-int(r)
-        csvtarget[i][2]=int(va*3.281) #for altitude in meters, remove the '*3.281' in this line
+for r in range(1, x):
+    for c in range(1, x):
+        csvtarget[i][0]=int(c)*w*y
+        csvtarget[i][1]=-int(r)*w*y
+        csvtarget[i][2]=int(f.z[x*r+c]*y)
         i += 1
-np.savetxt("elevationtarget.csv", csvtarget, delimiter=",")
+csvfilename = input("What would you like to name your  CSV file?")
+np.savetxt(csvfilename + ".csv", csvtarget, delimiter=",")
+
+#This csv file can be imported directly into Rhinoceros 5 to create a 3D point cloud of the topography.
