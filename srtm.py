@@ -27,7 +27,7 @@ while True:
     except ValueError:
         print("invalid target format")
         continue
-    if not(target[0] not in ("N", "E") or not target[1:3].isdigit() or target[3] not in ("W", "E") or not target[4:7].isdigit()):
+    if target[0] in ("N", "E") and target[1:3].isdigit() and target[3] in ("W", "E") and target[4:7].isdigit()):
         break
     else:
         print("Please enter coordinates in the correct format. Examples include: N46W122, N27E088, or S32W071")
@@ -62,18 +62,18 @@ if detail == 1:
     f.parseFileL3(target+".hgt")
     csvtarget = np.zeros((12960000,3)) #3600x3600
     x = 3601
-    w = 30
+    w = 30 #this corresponds to the granularity (in meters) of the data
 else:
     f.parseFileL1(target+".hgt")
     csvtarget = np.zeros((1440000,3)) #1200x1200
     x = 1201
-    w = 90
+    w = 90 #this corresponds to the granularity (in meters) of the data
 if units == "Feet":
     y = 3.281
 else:
     y = 1
     
-#place parsed np array into CSV file    
+#place parsed np array into CSV file. There are three columns and each row represents X, Y, and Z dimensions    
 i = 0
 for r in range(1, x):
     for c in range(1, x):
