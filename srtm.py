@@ -3,7 +3,7 @@ import struct
 import urllib
 import zipfile
 
-#define an class with a function to parse HGT files (the srtmParser class is adapted from a stack-exchange post)
+#define a class with functions to parse HGT files (the srtmParser class is adapted from a stack-exchange post)
 class srtmParser(object):
     def parseFileL1(self,filename):
         # read 1,442,401 (1201x1201) high-endian signed 16-bit words into self.z
@@ -52,7 +52,7 @@ while True:
     else:
         print("please enter either 'Feet' or 'Meters'")
 
-##downloads zipped file and extracts contents as hgt file named 'target' + .hgt
+#download zipped file and extract contents as hgt file named 'target' + .hgt
 file = urllib.request.urlretrieve("http://e4ftl01.cr.usgs.gov/SRTM/SRTMGL"+str(detail)+".003/2000.02.11/"+target+".SRTMGL"+str(detail)+".hgt.zip", "file.hgt.zip")
 zipfile.ZipFile('file.hgt.zip').extractall()
 
@@ -84,4 +84,4 @@ for ydimension in range(1, width):
 csvfilename = input("What would you like to name your  CSV file?")
 np.savetxt(csvfilename + ".csv", csvtarget, delimiter=",")
 
-#This csv file can be imported directly into Rhinoceros 5 to create a 3D point cloud of the topography.
+# This csv file can be imported directly into Rhinoceros 5 to create a 3D point cloud of the topography.
