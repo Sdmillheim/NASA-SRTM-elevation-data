@@ -59,14 +59,14 @@ else:
     
 # Place parsed np array into CSV file. There are three columns and each row represents X, Y, and Z dimensions    
 i = 0
-for ydimension in range(1, width):
+for ydimension in range(1, width): #technically 'height' in this loop, but it's a square
     for xdimension in range(1, width):
         csvtarget[i][0]=int(xdimension)*horizontalscale*unitscale
         csvtarget[i][1]=-int(ydimension)*horizontalscale*unitscale
         csvtarget[i][2]=int(parser.hgtcontents[width*ydimension+xdimension]*unitscale)
         i += 1
         
-csvfilename = input("What would you like to name your  CSV file?")
+csvfilename = input("What would you like to name your CSV file?")
 np.savetxt(csvfilename + ".csv", csvtarget, delimiter=",")
 
 # This csv file can be imported directly into Rhinoceros 5 to create a 3D point cloud of the topography.
