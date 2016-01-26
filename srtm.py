@@ -27,7 +27,7 @@ while True:
     except ValueError:
         print("invalid target format")
         continue
-    if target[0] in ("N", "E") and target[1:3].isdigit() and target[3] in ("W", "E") and target[4:7].isdigit()):
+    if target[0] in ("N", "E") and target[1:3].isdigit() and target[3] in ("W", "E") and target[4:7].isdigit():
         break
     else:
         print("Please enter coordinates in the correct format. Examples include: N46W122, N27E088, or S32W071")
