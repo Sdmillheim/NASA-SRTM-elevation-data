@@ -57,29 +57,29 @@ file = urllib.request.urlretrieve("http://e4ftl01.cr.usgs.gov/SRTM/SRTMGL"+str(d
 zipfile.ZipFile('file.hgt.zip').extractall()
 
 #parse HGT file and save contents as numpy array
-f = srtmParser()
+srtm = srtmParser()
 if detail == 1:
-    f.parseFileL3(target+".hgt")
+    srtm.parseFileL3(target+".hgt")
     csvtarget = np.zeros((12960000,3)) #3600x3600
-    x = 3601
-    w = 30 #this corresponds to the granularity (in meters) of the data
+    width = 3601
+    horizontalscale = 30 #this corresponds to the granularity (in meters) of the data
 else:
-    f.parseFileL1(target+".hgt")
+    srtm.parseFileL1(target+".hgt")
     csvtarget = np.zeros((1440000,3)) #1200x1200
-    x = 1201
-    w = 90 #this corresponds to the granularity (in meters) of the data
+    width = 1201
+    horizontalscale = 90 #this corresponds to the granularity (in meters) of the data
 if units == "Feet":
-    y = 3.281
+    unitscale = 3.281 # this is feet per 1 meter
 else:
-    y = 1
+    unitscale = 1
     
 #place parsed np array into CSV file. There are three columns and each row represents X, Y, and Z dimensions    
 i = 0
-for r in range(1, x):
-    for c in range(1, x):
-        csvtarget[i][0]=int(c)*w*y
-        csvtarget[i][1]=-int(r)*w*y
-        csvtarget[i][2]=int(f.z[x*r+c]*y)
+for ydimension in range(1, width):
+    for xdimension in range(1, width):
+        csvtarget[i][0]=int(xdimension)*horizontalscale*unitscale
+        csvtarget[i][1]=-int(ydimension)*horizontalscale*unitscale
+        csvtarget[i][2]=int(srtm.z[width*ydimension+xdimension]*unitscale)
         i += 1
 csvfilename = input("What would you like to name your  CSV file?")
 np.savetxt(csvfilename + ".csv", csvtarget, delimiter=",")
