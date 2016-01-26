@@ -1,7 +1,6 @@
 import numpy as np
-import urllib
-import zipfile
-import srtm
+import srtmdownload
+import srtmparse
 
 #select target coordinates, level of detail, and units of altitude
 while True:
@@ -35,22 +34,23 @@ while True:
     else:
         print("please enter either 'Feet' or 'Meters'")
 
-#download zipped file and extract contents as hgt file named 'target' + .hgt
-file = urllib.request.urlretrieve("http://e4ftl01.cr.usgs.gov/SRTM/SRTMGL"+str(detail)+".003/2000.02.11/"+target+".SRTMGL"+str(detail)+".hgt.zip", "file.hgt.zip")
-zipfile.ZipFile('file.hgt.zip').extractall()
-
 #parse HGT file and save contents as numpy array
-parser = srtm.srtmParser()
+downloader = srtmdownload.srtmDownloader()
+parser = srtmparse.srtmParser()
+
 if detail == 1:
+    downloader.downloadFileL3(target)
     parser.parseFileL3(target+".hgt")
     csvtarget = np.zeros((12960000,3)) #3600x3600
     width = 3601
     horizontalscale = 30 #this corresponds to the granularity (in meters) of the data
 else:
+    downloader.downloadFileL1(target)
     parser.parseFileL1(target+".hgt")
     csvtarget = np.zeros((1440000,3)) #1200x1200
     width = 1201
     horizontalscale = 90 #this corresponds to the granularity (in meters) of the data
+    
 if units == "Feet":
     unitscale = 3.281 # this is feet per 1 meter
 else:
@@ -64,6 +64,7 @@ for ydimension in range(1, width):
         csvtarget[i][1]=-int(ydimension)*horizontalscale*unitscale
         csvtarget[i][2]=int(parser.hgtcontents[width*ydimension+xdimension]*unitscale)
         i += 1
+        
 csvfilename = input("What would you like to name your  CSV file?")
 np.savetxt(csvfilename + ".csv", csvtarget, delimiter=",")
 
