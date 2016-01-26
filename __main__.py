@@ -2,7 +2,7 @@ import numpy as np
 import srtmdownload
 import srtmparse
 
-#select target coordinates, level of detail, and units of altitude
+# Select target coordinates, level of detail, and units of altitude
 while True:
     try:
         target = input("Select target coordinates (example: N46W122)")
@@ -34,29 +34,30 @@ while True:
     else:
         print("please enter either 'Feet' or 'Meters'")
 
-#parse HGT file and save contents as numpy array
-downloader = srtmdownload.srtmDownloader()
-parser = srtmparse.srtmParser()
-
-if detail == 1:
-    downloader.downloadFileL3(target)
-    parser.parseFileL3(target+".hgt")
-    csvtarget = np.zeros((12960000,3)) #3600x3600
-    width = 3601
-    horizontalscale = 30 #this corresponds to the granularity (in meters) of the data
-else:
-    downloader.downloadFileL1(target)
-    parser.parseFileL1(target+".hgt")
-    csvtarget = np.zeros((1440000,3)) #1200x1200
-    width = 1201
-    horizontalscale = 90 #this corresponds to the granularity (in meters) of the data
-    
+# Define units for later use based on input        
 if units == "Feet":
     unitscale = 3.281 # this is feet per 1 meter
 else:
     unitscale = 1
+
+# Parse HGT file and save contents as numpy array
+downloader = srtmdownload.srtmDownloader()
+parser = srtmparse.srtmParser()
+
+if detail == 1:
+    downloader.downloadFileL1(target)
+    parser.parseFileL1(target+".hgt")
+    csvtarget = np.zeros((12960000,3)) #3600x3600
+    width = 3601
+    horizontalscale = 30 #this corresponds to the granularity (in meters) of the data
+else:
+    downloader.downloadFileL3(target)
+    parser.parseFileL3(target+".hgt")
+    csvtarget = np.zeros((1440000,3)) #1200x1200
+    width = 1201
+    horizontalscale = 90 #this corresponds to the granularity (in meters) of the data
     
-#place parsed np array into CSV file. There are three columns and each row represents X, Y, and Z dimensions    
+# Place parsed np array into CSV file. There are three columns and each row represents X, Y, and Z dimensions    
 i = 0
 for ydimension in range(1, width):
     for xdimension in range(1, width):
