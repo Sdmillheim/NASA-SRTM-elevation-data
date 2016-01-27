@@ -47,7 +47,7 @@ parser = srtmparse.srtmParser()
 if detail == 1:
     downloader.downloadFileL1(target)
     parser.parseFileL1(target+".hgt")
-    csvtarget = np.zeros((12960000,3)) #3600x3600
+    csvtarget = np.zeros((12960000,3)) #3600x3600: one less than file dimension because each file overlaps with its neighbors by one row or columns
     width = 3601
     horizontalscale = 30 #this corresponds to the granularity (in meters) of the data
 else:
@@ -69,4 +69,4 @@ for ydimension in range(1, width): #technically 'height' in this loop, but it's 
 csvfilename = input("What would you like to name your CSV file?")
 np.savetxt(csvfilename + ".csv", csvtarget, delimiter=",")
 
-# This csv file can be imported directly into Rhinoceros 5 to create a 3D point cloud of the topography.
+# This csv file can be imported directly into Rhinoceros 5 software to create a 3D point cloud of the topography.
