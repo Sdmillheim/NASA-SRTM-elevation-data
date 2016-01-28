@@ -1,6 +1,6 @@
+# Defines a class with functions to parse HGT files (the srtmParser class is adapted from a stack-exchange post)
 import struct
 
-# Defines a class with functions to parse HGT files (the srtmParser class is adapted from a stack-exchange post)
 class srtmParser(object):
     def parseFileL1(self,filename):
         # Read 12,967,201 (3601x3601) high-endian signed 16-bit words into self.z
