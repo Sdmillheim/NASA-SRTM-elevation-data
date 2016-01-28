@@ -36,12 +36,12 @@ while True:
 
 # Define some parameters for later use based on input        
 if units == "Feet":
-    unitscale = 3.281 # this is feet per 1 meter
+    unitscale = 3.281 # This is feet per 1 meter
 else:
     unitscale = 1
-csvtarget = np.zeros((int(3600/detail)**2,3)) #either 3600X3600 or 1200X1200. One less than file dimension because files overlap. 
-width = int(3600/detail) + 1
-horizontalscale = 30*detail #this corresponds to the granularity (in meters) of the data
+csvtarget = np.zeros((int(3600/detail)**2,3)) # Either 3600X3600 or 1200X1200. One less than file dimension because files overlap. 
+width = int(3600/detail) + 1 # This is used for for both x and y dimensions. The files are square.
+horizontalscale = 30*detail # This corresponds to the granularity (in meters) of the data. Makes proportions right in Rhinoceros. 
 
 # Download, unzip, and parse HGT file
 downloader = srtmdownload.srtmDownloader()
@@ -56,7 +56,7 @@ else:
     
 # Read data from file into numpy array and save as a CSV file. There are three columns and each row represents X, Y, and Z dimensions    
 i = 0
-for ydimension in range(1, width): #technically 'height' in this loop, but it's a square
+for ydimension in range(1, width):
     for xdimension in range(1, width):
         csvtarget[i][0]=int(xdimension)*horizontalscale*unitscale
         csvtarget[i][1]=-int(ydimension)*horizontalscale*unitscale
