@@ -34,30 +34,27 @@ while True:
     else:
         print("please enter either 'Feet' or 'Meters'")
 
-# Define units for later use based on input        
+# Define some parameters for later use based on input        
 if units == "Feet":
     unitscale = 3.281 # this is feet per 1 meter
 else:
     unitscale = 1
+csvtarget = np.zeros((int(3600/detail)**2,3)) #either 3600X3600 or 1200X1200. One less than file dimension because files overlap. 
+width = int(3600/detail) + 1
+horizontalscale = 30*detail #this corresponds to the granularity (in meters) of the data
 
-# Parse HGT file and save contents as numpy array
+# Download, unzip, and parse HGT file
 downloader = srtmdownload.srtmDownloader()
 parser = srtmparse.srtmParser()
 
 if detail == 1:
     downloader.downloadFileL1(target)
     parser.parseFileL1(target+".hgt")
-    csvtarget = np.zeros((12960000,3)) #3600x3600: one less than file dimension because each file overlaps with its neighbors by one row or columns
-    width = 3601
-    horizontalscale = 30 #this corresponds to the granularity (in meters) of the data
 else:
     downloader.downloadFileL3(target)
     parser.parseFileL3(target+".hgt")
-    csvtarget = np.zeros((1440000,3)) #1200x1200
-    width = 1201
-    horizontalscale = 90 #this corresponds to the granularity (in meters) of the data
     
-# Place parsed np array into CSV file. There are three columns and each row represents X, Y, and Z dimensions    
+# Read data from file into numpy array and save as a CSV file. There are three columns and each row represents X, Y, and Z dimensions    
 i = 0
 for ydimension in range(1, width): #technically 'height' in this loop, but it's a square
     for xdimension in range(1, width):
