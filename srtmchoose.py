@@ -1,4 +1,4 @@
-# Defines a class with functions to select parameters for data download and format
+# Defines a class with functions to prompt user for parameters for data download and format
 import numpy as np
 
 class srtmChoose(object):
