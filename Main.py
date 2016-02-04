@@ -3,7 +3,8 @@ import srtmchoose
 import srtmdownload
 import srtmparse
 
-# Select target coordinates, level of detail, and units of altitude and define parameters based on input
+# Select target coordinates, level of detail, and units of altitude. 
+# Define parameters based on input
 parameters = srtmchoose.srtmChoose()
 target = parameters.chooseTarget()
 detail, csvtarget, width, horizontalscale = parameters.chooseDetail()
