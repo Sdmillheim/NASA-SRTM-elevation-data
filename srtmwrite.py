@@ -1,4 +1,5 @@
-# Read data from file into numpy array and save as a CSV file. There are three columns and each row represents X, Y, and Z dimensions    
+# Defines a class with a function to read tuple from parser into numpy array and save as a CSV file. 
+# Prompts the user to provide a file name.
 import numpy as np
 
 class srtmWriter(object):
