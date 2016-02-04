@@ -4,7 +4,7 @@ import numpy as np
 class srtmChoose(object):
     def chooseTarget(self):
         target = '________'
-        while not (target[0] in ("N", "E") and target[1:3].isdigit() and target[3] in ("W", "E") and target[4:7].isdigit()):
+        while not (target[0] in ("N", "S") and target[1:3].isdigit() and target[3] in ("W", "E") and target[4:7].isdigit()):
             print('Select target coordinates (Format example: N46W122)')
             target = input('--> ')
         return target
