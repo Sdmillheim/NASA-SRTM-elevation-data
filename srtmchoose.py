@@ -1,5 +1,4 @@
 # Defines a class with functions to prompt user for parameters for data download and format
-import numpy as np
 
 class srtmChoose(object):
     def chooseTarget(self):
@@ -13,9 +12,7 @@ class srtmChoose(object):
         while detail != 1 and detail != 3:
             print('Select level of detail. Enter 1 for 1-arc second (higher detail) or 3 for 3-arc second (lower detail)')
             detail = int(input('--> '))
-        csvtarget = np.zeros(((3600/detail)**2,3)) #either 3600X3600 or 1200X1200. One less than file dimension because files overlap. 
-        width = int(3600/detail + 1)
-        return (detail, csvtarget, width)
+        return detail
     def chooseUnits(self):
         units = ''
         while units not in ("Feet", "Meters"):
