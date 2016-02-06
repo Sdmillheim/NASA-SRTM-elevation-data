@@ -7,7 +7,7 @@ import srtmwrite
 # Define parameters based on input
 parameters = srtmchoose.srtmChoose()
 target = parameters.chooseTarget()
-detail, csvtarget, width, horizontalscale = parameters.chooseDetail()
+detail, csvtarget, width = parameters.chooseDetail()
 unitscale = parameters.chooseUnits()
 
 # Download, unzip, and parse HGT file
@@ -23,6 +23,6 @@ else:
     
 # Read data from file into numpy array and save as a CSV file. There are three columns with X, Y, and Z dimensions for each point   
 writer = srtmwrite.srtmWriter()
-writer.srtmWriteFile(csvtarget, width, horizontalscale, hgtcontents, unitscale)
+writer.srtmWriteFile(csvtarget, width, hgtcontents, unitscale)
 
 # This csv file can be imported directly into Rhinoceros 5 software to create a 3D point cloud of the topography.
