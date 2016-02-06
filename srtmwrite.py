@@ -3,12 +3,12 @@
 import numpy as np
 
 class srtmWriter(object):
-    def srtmWriteFile(self, csvtarget, width, horizontalscale, hgtcontents, unitscale):
+    def srtmWriteFile(self, csvtarget, width, hgtcontents, unitscale):
         i = 0
         for ydimension in range(1, width): #technically 'height' in this loop, but it's a square
             for xdimension in range(1, width):
-                csvtarget[i][0]=int(xdimension)*horizontalscale*unitscale
-                csvtarget[i][1]=-int(ydimension)*horizontalscale*unitscale
+                csvtarget[i][0]=int(xdimension)*unitscale*detail*30
+                csvtarget[i][1]=-int(ydimension)*unitscale*detail*30
                 csvtarget[i][2]=int(hgtcontents[width*ydimension+xdimension]*unitscale)
                 i += 1
         
