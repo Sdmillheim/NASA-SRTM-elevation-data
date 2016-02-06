@@ -1,7 +1,6 @@
 import srtmchoose, srtmdownload, srtmparse, srtmwrite
 
-# Select target coordinates, level of detail, and units of altitude. 
-# Define parameters based on input
+# Prompt user for target coordinates, level of detail, and units of altitude. 
 parameters = srtmchoose.srtmChoose()
 target = parameters.chooseTarget()
 detail = parameters.chooseDetail()
