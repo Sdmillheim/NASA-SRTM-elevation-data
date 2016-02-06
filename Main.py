@@ -1,7 +1,4 @@
-import srtmchoose
-import srtmdownload
-import srtmparse
-import srtmwrite
+import srtmchoose, srtmdownload, srtmparse, srtmwrite
 
 # Select target coordinates, level of detail, and units of altitude. 
 # Define parameters based on input
