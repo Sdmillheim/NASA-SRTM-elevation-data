@@ -6,7 +6,7 @@ class srtmWriter(object):
     def srtmWriteFile(self, hgtcontents, detail, unitscale):
         csvtarget = np.zeros(((3600/detail)**2,3)) #either 3600X3600 or 1200X1200. One less than file dimension because files overlap. 
         i = 0
-        for ydimension in range(1, int(3600/detail + 1)): # 1 to int(3600/detail + 1) represents length of x or y dimension of square
+        for ydimension in range(1, int(3600/detail + 1)): # int(3600/detail + 1) represents height and width of square
             for xdimension in range(1, int(3600/detail + 1)): 
                 csvtarget[i][0]=int(xdimension)*unitscale*detail*30  # x dimension of 3D space
                 csvtarget[i][1]=-int(ydimension)*unitscale*detail*30 # y dimension of 3D space
