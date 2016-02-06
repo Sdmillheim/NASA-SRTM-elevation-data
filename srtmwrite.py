@@ -10,7 +10,7 @@ class srtmWriter(object):
             for xdimension in range(1, int(3600/detail + 1)): 
                 csvtarget[i][0]=int(xdimension)*unitscale*detail*30  # x dimension of 3D space
                 csvtarget[i][1]=-int(ydimension)*unitscale*detail*30 # y dimension of 3D space
-                csvtarget[i][2]=int(hgtcontents[width*ydimension+xdimension]*unitscale) # z dimension of 3D space
+                csvtarget[i][2]=int(hgtcontents[int(3600/detail + 1)*ydimension+xdimension]*unitscale) # z dimension of 3D space
                 i += 1
         
         csvfilename = input("What would you like to name your CSV file?")
