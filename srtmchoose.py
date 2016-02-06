@@ -10,13 +10,12 @@ class srtmChoose(object):
         return target
     def chooseDetail(self):
         detail = ''
-        while detail != '1' and detail != '3':
+        while detail != 1 and detail != 3:
             print('Select level of detail. Enter 1 for 1-arc second (higher detail) or 3 for 3-arc second (lower detail)')
-            detail = input('--> ')
-        csvtarget = np.zeros(((3600/int(detail))**2,3)) #either 3600X3600 or 1200X1200. One less than file dimension because files overlap. 
-        width = int(3600/int(detail) + 1)
-        horizontalscale = 30*int(detail)
-        return (detail, csvtarget, width, horizontalscale)
+            detail = int(input('--> '))
+        csvtarget = np.zeros(((3600/detail)**2,3)) #either 3600X3600 or 1200X1200. One less than file dimension because files overlap. 
+        width = int(3600/detail + 1)
+        return (detail, csvtarget, width)
     def chooseUnits(self):
         units = ''
         while units not in ("Feet", "Meters"):
